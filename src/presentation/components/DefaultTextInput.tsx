@@ -1,4 +1,4 @@
-import { Image, ImageSourcePropType, StyleSheet, TextInput, View } from "react-native";
+import { Image, ImageSourcePropType, KeyboardType, StyleSheet, TextInput, View } from "react-native";
 import { MyColors } from "../theme/AppTheme";
 
 interface Props {
@@ -7,18 +7,23 @@ interface Props {
     value: string;
     onChangeText: (prop: string, value: any) => void;
     property: string;
+    keyboardType?: KeyboardType;
+    secureTextEntry?: boolean;
 }
 
-export const DefaultTextInput = ({ placeholder, image, value, onChangeText, property }: Props) => {
+export const DefaultTextInput = ({ placeholder, image, value, onChangeText, property, keyboardType = 'default', secureTextEntry = false }: Props) => {
     return (
         <View style={styles.container}>
             <Image source={image} style={styles.image} />
-            <TextInput 
-                placeholder={placeholder} 
-                style={styles.textInput} 
+            <TextInput
+                placeholder={placeholder}
+                style={styles.textInput}
                 placeholderTextColor={MyColors.placeholder}
                 value={value}
                 onChangeText={text => onChangeText(property, text)}
+                secureTextEntry={secureTextEntry}
+                keyboardType={keyboardType}
+                autoCapitalize='none'
             />
         </View>
     )

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { View, Text, Image, Dimensions, TouchableOpacity, Platform, Alert, ToastAndroid } from 'react-native';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../navigation/MainStackNavigator";
@@ -6,13 +7,12 @@ import { Path, Svg } from "react-native-svg";
 import { MyColors } from "../../../theme/AppTheme";
 import { DefaultTextInput } from '../../../components/DefaultTextInput';
 import { DefaultButton } from '../../../components/DefaultButton';
-import viewModel from './ViewModel';
-import { useEffect } from 'react';
+import DI from '../../../../di/ioc';
 
 interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'> { };
 
 export const RegisterScreen = ({ navigation, route }: Props) => {
-    const { email, password, username, confirmPassword, onChange, error, register, setError } = viewModel();
+    const { email, password, username, confirmPassword, onChange, error, register, setError } = DI.resolve('RegisterViewModel');
 
     useEffect(() => {
         if (error !== '') {
@@ -67,6 +67,7 @@ export const RegisterScreen = ({ navigation, route }: Props) => {
                     property='email'
                     value={email}
                     onChangeText={onChange}
+                    keyboardType='email-address'
                 />
 
                 <DefaultTextInput
@@ -75,6 +76,7 @@ export const RegisterScreen = ({ navigation, route }: Props) => {
                     property='password'
                     value={password}
                     onChangeText={onChange}
+                    secureTextEntry={true}
                 />
 
                 <DefaultTextInput
@@ -83,6 +85,7 @@ export const RegisterScreen = ({ navigation, route }: Props) => {
                     property='confirmPassword'
                     value={confirmPassword}
                     onChangeText={onChange}
+                    secureTextEntry={true}
                 />
 
                 <DefaultButton onPress={register} text='Register' />

@@ -7,12 +7,12 @@ import { MyColors } from '../../../theme/AppTheme'
 import { DefaultButton } from '../../../components/DefaultButton';
 import { DefaultTextInput } from '../../../components/DefaultTextInput';
 import styles from './Styles';
-import viewModel from './ViewModel';
+import DI from '../../../../di/ioc';
 
 interface Props extends StackScreenProps<RootStackParamList, 'HomeScreen'> { }
 
 export const LoginScreen = ({ navigation, route }: Props) => {
-    const { email, password, error, setError, onChange, login } = viewModel();
+    const { email, password, error, setError, onChange, login } = DI.resolve('LoginViewModel');
 
     useEffect(() => {
         if(error !== '') {
@@ -52,6 +52,7 @@ export const LoginScreen = ({ navigation, route }: Props) => {
                 value={email}
                 property='email'
                 onChangeText={onChange}
+                keyboardType='email-address'
             />
             <DefaultTextInput
                 placeholder="Password"
@@ -59,6 +60,7 @@ export const LoginScreen = ({ navigation, route }: Props) => {
                 value={password}
                 property='password'
                 onChangeText={onChange}
+                secureTextEntry={true}
             />
 
             <DefaultButton

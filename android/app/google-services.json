@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1032822773800",
+    "project_id": "rngamermvvm-1ba2a",
+    "storage_bucket": "rngamermvvm-1ba2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032822773800:android:b8184c0a91fee05ef43d1d",
+        "android_client_info": {
+          "package_name": "com.gamer_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLjn6LI56Q19uAGwufAQ3gZ5lZbyHBZE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
