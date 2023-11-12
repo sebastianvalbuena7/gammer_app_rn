@@ -1,5 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { AuthDataSource } from "../datasource/remote/AuthRemoteDataSource";
+import { AuthDataSource, signOut } from '../datasource/remote/AuthRemoteDataSource';
 import { User } from '../../domain/models/User';
 
 export interface AuthRepository {
@@ -13,6 +13,13 @@ export interface AuthRepository {
     register(user: User): Promise<{
         error: null;
         result: FirebaseAuthTypes.UserCredential;
+    } | {
+        error: any;
+        result: null;
+    }>;
+    signOut(): Promise<{
+        error: null;
+        result: boolean;
     } | {
         error: any;
         result: null;
@@ -41,6 +48,16 @@ export const AuthRepository = ({ AuthDataSource }: { AuthDataSource: AuthDataSou
         }> {
             const {error, result} = await AuthDataSource.register(user);
 
+            return {error, result};
+        },
+        async signOut(): Promise<{
+            error: null;
+            result: boolean;
+        } | {
+            error: any;
+            result: null;
+        }> {
+            const {error, result} = await AuthDataSource.signOut();
             return {error, result};
         }
     }

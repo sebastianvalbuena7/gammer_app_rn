@@ -28,6 +28,9 @@ export const RegisterScreen = ({ navigation, route }: Props) => {
         if (result !== undefined && result !== null) {
             Toast.show('User Created', Toast.SHORT);
             setResult(undefined);
+            navigation.replace('HomeScreen', {
+                key: '', props: '', type: ''
+            })
         };
     }, [result])
 

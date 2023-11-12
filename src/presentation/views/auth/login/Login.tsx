@@ -10,7 +10,7 @@ import styles from './Styles';
 import DI from '../../../../di/ioc';
 import Toast from 'react-native-simple-toast';
 
-interface Props extends StackScreenProps<RootStackParamList, 'HomeScreen'> { }
+interface Props extends StackScreenProps<RootStackParamList, 'LoginScreen'> { }
 
 export const LoginScreen = ({ navigation, route }: Props) => {
     const { email, password, error, setError, onChange, login, result, setResult, loading } = DI.resolve('LoginViewModel');
@@ -28,6 +28,10 @@ export const LoginScreen = ({ navigation, route }: Props) => {
         if (result !== undefined && result !== null) {
             Toast.show('User logged', Toast.SHORT);
             setResult(undefined);
+            // ELIMINAR EL HISTORIAL DE LAS PANTALLAS ANTERIORES
+            navigation.replace('HomeScreen', {
+                key: '', props: '', type: ''
+            })
         };
     }, [result])
 
@@ -73,7 +77,7 @@ export const LoginScreen = ({ navigation, route }: Props) => {
 
                 <DefaultButton
                     text="Login"
-                    onPress={() => login()}
+                    onPress={login}
                 />
 
                 <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen', {
@@ -85,11 +89,11 @@ export const LoginScreen = ({ navigation, route }: Props) => {
                         REGISTER NOW
                     </Text>
                 </TouchableOpacity>
-                {
-                    loading &&
-                    <ActivityIndicator size='large' color={MyColors.primary} style={MyStyles.stylesLoading} />
-                }
             </View>
+            {
+                loading &&
+                <ActivityIndicator size='large' color={MyColors.primary} style={MyStyles.stylesLoading} />
+            }
         </View>
     )
 }

@@ -17,6 +17,13 @@ export interface AuthDataSource {
         error: any;
         result: null;
     }>;
+    signOut(): Promise<{
+        error: null;
+        result: boolean;
+    } | {
+        error: any;
+        result: null;
+    }>
 }
 
 export const login = async (email: string, password: string) => {
@@ -34,6 +41,15 @@ export const register = async (user: User) => {
         const data = await auth().createUserWithEmailAndPassword(user.email, user.password);
 
         return Promise.resolve({error: null, result: data});
+    } catch(error: any) {
+        return Promise.resolve({error: error.message, result: null});
+    }
+}
+
+export const signOut = async () => {
+    try {
+        await auth().signOut();
+        return Promise.resolve({error: null, result: true});
     } catch(error: any) {
         return Promise.resolve({error: error.message, result: null});
     }
