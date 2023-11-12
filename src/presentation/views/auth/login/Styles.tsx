@@ -12,8 +12,8 @@ const HomeStyles = StyleSheet.create({
         color: MyColors.background
     },
     image: {
-        width: 175,
-        height: 175,
+        width: 170,
+        height: 170,
         transform: [{
             rotate: '35deg'
         }],

@@ -1,26 +1,35 @@
 import { useState } from "react";
+import { LoginUseCase } from '../../../../domain/useCases/auth/LoginUseCase';
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
-const LoginViewModel = () => {
+const LoginViewModel = ({ LoginUseCase }: { LoginUseCase: LoginUseCase }) => {
     const [error, setError] = useState('')
+
+    const [loading, setLoading] = useState(false);
 
     const [values, setValues] = useState({
         email: '',
         password: ''
     });
 
+    const [result, setResult] = useState<FirebaseAuthTypes.UserCredential>();
+
     const onChange = (prop: string, value: any) => {
         setValues({ ...values, [prop]: value })
     };
 
-    const login = () => {
+    const login = async () => {
         if (isValidForm()) {
-            console.log(`Email ${values.email}`)
-            console.log(`Password ${values.password}`)
+            setLoading(true);
+            const {error, result} = await LoginUseCase.run(values.email, values.password);
+            setResult(result!);
+            setError(error);
+            setLoading(false);
         }
     };
 
     const isValidForm = (): boolean => {
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         if (values.email === '') {
             setError('The field email has not be empty');
@@ -49,7 +58,10 @@ const LoginViewModel = () => {
         onChange,
         login,
         error,
-        setError
+        setError, 
+        result,
+        setResult,
+        loading
     }
 };
 

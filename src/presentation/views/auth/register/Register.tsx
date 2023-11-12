@@ -1,29 +1,35 @@
 import { useEffect } from 'react';
-import { View, Text, Image, Dimensions, TouchableOpacity, Platform, Alert, ToastAndroid } from 'react-native';
+import { View, Text, Image, Dimensions, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../navigation/MainStackNavigator";
 import styles from './Styles';
 import { Path, Svg } from "react-native-svg";
-import { MyColors } from "../../../theme/AppTheme";
+import { MyColors, MyStyles } from "../../../theme/AppTheme";
 import { DefaultTextInput } from '../../../components/DefaultTextInput';
 import { DefaultButton } from '../../../components/DefaultButton';
 import DI from '../../../../di/ioc';
+import Toast from 'react-native-simple-toast';
 
 interface Props extends StackScreenProps<RootStackParamList, 'RegisterScreen'> { };
 
 export const RegisterScreen = ({ navigation, route }: Props) => {
-    const { email, password, username, confirmPassword, onChange, error, register, setError } = DI.resolve('RegisterViewModel');
+    const { email, password, username, confirmPassword, onChange, error, register, setError, result, setResult, loading } = DI.resolve('RegisterViewModel');
 
     useEffect(() => {
-        if (error !== '') {
-            if (Platform.OS === 'android') {
-                ToastAndroid.show(error, ToastAndroid.LONG);
-            } else {
-                Alert.alert(error);
-            }
-            setError('')
+        if (error !== null) {
+            if (error !== '') {
+                Toast.show(error, Toast.SHORT);
+                setError('');
+            };
         }
     }, [error])
+
+    useEffect(() => {
+        if (result !== undefined && result !== null) {
+            Toast.show('User Created', Toast.SHORT);
+            setResult(undefined);
+        };
+    }, [result])
 
     return (
         <View style={styles.container}>
@@ -50,7 +56,7 @@ export const RegisterScreen = ({ navigation, route }: Props) => {
                     />
                 </TouchableOpacity>
             </View>
-            <View style={{ marginTop: 40 }}>
+            <ScrollView style={{ marginTop: 40 }}>
                 <View style={{ flex: 1 }} />
 
                 <DefaultTextInput
@@ -89,7 +95,11 @@ export const RegisterScreen = ({ navigation, route }: Props) => {
                 />
 
                 <DefaultButton onPress={register} text='Register' />
-            </View>
+            </ScrollView>
+            {
+                loading &&
+                <ActivityIndicator size='large' color={MyColors.primary} style={MyStyles.stylesLoading} />
+            }
         </View>
     )
 }

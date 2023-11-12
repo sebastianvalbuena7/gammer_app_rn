@@ -1,29 +1,35 @@
 import { useEffect } from 'react';
-import { Image, View, Text, Dimensions, TouchableOpacity, ToastAndroid, Alert, Platform } from 'react-native';
+import { Image, View, Text, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Path, Svg } from 'react-native-svg'
 import { StackScreenProps } from '@react-navigation/stack'
 import { RootStackParamList } from '../../../navigation/MainStackNavigator'
-import { MyColors } from '../../../theme/AppTheme'
+import { MyColors, MyStyles } from '../../../theme/AppTheme'
 import { DefaultButton } from '../../../components/DefaultButton';
 import { DefaultTextInput } from '../../../components/DefaultTextInput';
 import styles from './Styles';
 import DI from '../../../../di/ioc';
+import Toast from 'react-native-simple-toast';
 
 interface Props extends StackScreenProps<RootStackParamList, 'HomeScreen'> { }
 
 export const LoginScreen = ({ navigation, route }: Props) => {
-    const { email, password, error, setError, onChange, login } = DI.resolve('LoginViewModel');
+    const { email, password, error, setError, onChange, login, result, setResult, loading } = DI.resolve('LoginViewModel');
 
     useEffect(() => {
-        if(error !== '') {
-            if(Platform.OS === 'android') {
-                ToastAndroid.show(error, ToastAndroid.LONG);
-            } else {
-                Alert.alert(error);
-            }
-            setError('')
-        };
+        if (error !== null) {
+            if (error !== '') {
+                Toast.show(error, Toast.SHORT);
+                setError('');
+            };
+        }
     }, [error]);
+
+    useEffect(() => {
+        if (result !== undefined && result !== null) {
+            Toast.show('User logged', Toast.SHORT);
+            setResult(undefined);
+        };
+    }, [result])
 
     return (
         <View style={styles.container}>
@@ -44,39 +50,46 @@ export const LoginScreen = ({ navigation, route }: Props) => {
                     style={styles.image}
                 />
             </View>
+
             <View style={{ flex: 1 }} />
 
-            <DefaultTextInput
-                placeholder="Email"
-                image={require('../../../../../assets/img/email.png')}
-                value={email}
-                property='email'
-                onChangeText={onChange}
-                keyboardType='email-address'
-            />
-            <DefaultTextInput
-                placeholder="Password"
-                image={require('../../../../../assets/img/password.png')}
-                value={password}
-                property='password'
-                onChangeText={onChange}
-                secureTextEntry={true}
-            />
+            <View>
+                <DefaultTextInput
+                    placeholder="Email"
+                    image={require('../../../../../assets/img/email.png')}
+                    value={email}
+                    property='email'
+                    onChangeText={onChange}
+                    keyboardType='email-address'
+                />
+                <DefaultTextInput
+                    placeholder="Password"
+                    image={require('../../../../../assets/img/password.png')}
+                    value={password}
+                    property='password'
+                    onChangeText={onChange}
+                    secureTextEntry={true}
+                />
 
-            <DefaultButton
-                text="Login"
-                onPress={() => login()}
-            />
+                <DefaultButton
+                    text="Login"
+                    onPress={() => login()}
+                />
 
-            <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen', {
-                props: '',
-                type: '',
-                key: ''
-            })}>
-                <Text style={styles.textRegister}>
-                    REGISTER NOW
-                </Text>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen', {
+                    props: '',
+                    type: '',
+                    key: ''
+                })}>
+                    <Text style={styles.textRegister}>
+                        REGISTER NOW
+                    </Text>
+                </TouchableOpacity>
+                {
+                    loading &&
+                    <ActivityIndicator size='large' color={MyColors.primary} style={MyStyles.stylesLoading} />
+                }
+            </View>
         </View>
     )
 }

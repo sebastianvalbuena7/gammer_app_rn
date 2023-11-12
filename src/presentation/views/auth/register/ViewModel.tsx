@@ -1,7 +1,14 @@
 import { useState } from "react";
+import { RegisterUseCase } from '../../../../domain/useCases/auth/RegisterUseCase';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
-const RegisterViewModel = () => {
+const RegisterViewModel = ({RegisterUseCase}: {RegisterUseCase: RegisterUseCase}) => {
     const [error, setError] = useState('');
+
+    const [loading, setLoading] = useState(false);
+
+    const [result, setResult] = useState<FirebaseAuthTypes.UserCredential>();
+
     const [values, setValues] = useState({
         username: '',
         email: '',
@@ -13,14 +20,22 @@ const RegisterViewModel = () => {
         setValues({ ...values, [prop]: value })
     };
 
-    const register = () => {
-        if(isValidForm()) {
-            console.log(values);
+    const register = async () => {
+        if (isValidForm()) {
+            setLoading(true);
+            const {error, result} = await RegisterUseCase.run({
+                username: values.username,
+                email: values.email,
+                password: values.password
+            });
+            setResult(result!);
+            setError(error);
+            setLoading(false);
         }
     }
 
     const isValidForm = (): boolean => {
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
         if (values.username === '') {
             setError('The field username has not be empty');
@@ -52,7 +67,7 @@ const RegisterViewModel = () => {
             return false;
         }
 
-        if(values.password !== values.confirmPassword) {
+        if (values.password !== values.confirmPassword) {
             setError('The passwords do not match');
             return false;
         }
@@ -65,7 +80,10 @@ const RegisterViewModel = () => {
         onChange,
         error,
         setError,
-        register
+        register,
+        result,
+        setResult,
+        loading
     }
 };
 

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 18,
         marginHorizontal: 30,
-        color: MyColors.secondary,
+        color: '#A5A5A5',
         flex: 1
     },
     image: {
