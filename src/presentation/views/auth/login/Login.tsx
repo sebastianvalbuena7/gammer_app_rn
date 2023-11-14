@@ -9,11 +9,12 @@ import { DefaultTextInput } from '../../../components/DefaultTextInput';
 import styles from './Styles';
 import DI from '../../../../di/ioc';
 import Toast from 'react-native-simple-toast';
+import auth from '@react-native-firebase/auth';
 
 interface Props extends StackScreenProps<RootStackParamList, 'LoginScreen'> { }
 
 export const LoginScreen = ({ navigation, route }: Props) => {
-    const { email, password, error, setError, onChange, login, result, setResult, loading } = DI.resolve('LoginViewModel');
+    const { email, password, error, setError, onChange, login, result, setResult, loading, getUser, user } = DI.resolve('LoginViewModel');
 
     useEffect(() => {
         if (error !== null) {
@@ -33,7 +34,18 @@ export const LoginScreen = ({ navigation, route }: Props) => {
                 key: '', props: '', type: ''
             })
         };
-    }, [result])
+    }, [result]);
+
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged((user) => {
+            if (user !== null) {
+                navigation.replace('TabsNavigator', {
+                    key: '', props: '', type: ''
+                });
+            }
+        });
+        return subscriber; // unsubscribe on unmount
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -66,6 +78,7 @@ export const LoginScreen = ({ navigation, route }: Props) => {
                     onChangeText={onChange}
                     keyboardType='email-address'
                 />
+
                 <DefaultTextInput
                     placeholder="Password"
                     image={require('../../../../../assets/img/password.png')}
@@ -75,10 +88,12 @@ export const LoginScreen = ({ navigation, route }: Props) => {
                     secureTextEntry={true}
                 />
 
-                <DefaultButton
-                    text="Login"
-                    onPress={login}
-                />
+                <View style={{marginVertical: 40}}>
+                    <DefaultButton
+                        text="Login"
+                        onPress={login}
+                    />
+                </View>
 
                 <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen', {
                     props: '',

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { LoginUseCase } from '../../../../domain/useCases/auth/LoginUseCase';
+import { GetUserUseCase } from '../../../../domain/useCases/auth/GetUserUseCase';
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
-const LoginViewModel = ({ LoginUseCase }: { LoginUseCase: LoginUseCase }) => {
-    const [error, setError] = useState('')
+function LoginViewModel({ GetUserUseCase, LoginUseCase }: { GetUserUseCase: GetUserUseCase; LoginUseCase: LoginUseCase }) {
+    const [error, setError] = useState('');
 
     const [loading, setLoading] = useState(false);
 
@@ -14,14 +15,22 @@ const LoginViewModel = ({ LoginUseCase }: { LoginUseCase: LoginUseCase }) => {
 
     const [result, setResult] = useState<FirebaseAuthTypes.UserCredential>();
 
+    const [user, setUser] = useState<FirebaseAuthTypes.User>();
+
+    const getUser = async () => {
+        const { error, result } = await GetUserUseCase.run();
+        setUser(result!);
+        setError(error!);
+    }
+
     const onChange = (prop: string, value: any) => {
-        setValues({ ...values, [prop]: value })
+        setValues({ ...values, [prop]: value });
     };
 
     const login = async () => {
         if (isValidForm()) {
             setLoading(true);
-            const {error, result} = await LoginUseCase.run(values.email, values.password);
+            const { error, result } = await LoginUseCase.run(values.email, values.password);
             setResult(result!);
             setError(error);
             setLoading(false);
@@ -58,11 +67,13 @@ const LoginViewModel = ({ LoginUseCase }: { LoginUseCase: LoginUseCase }) => {
         onChange,
         login,
         error,
-        setError, 
+        setError,
         result,
         setResult,
-        loading
-    }
-};
+        loading,
+        getUser,
+        user
+    };
+}
 
 export default LoginViewModel;

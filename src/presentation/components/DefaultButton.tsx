@@ -4,12 +4,18 @@ import { MyColors } from "../theme/AppTheme"
 interface Props {
     text: string;
     onPress: () => void;
-    image?: ImageSourcePropType
+    image?: ImageSourcePropType;
+    color?: string
 }
 
-export const DefaultButton = ({ onPress, text, image = require('../../../assets/img/right-arrow.png') }: Props) => {
+export const DefaultButton = ({
+    onPress,
+    text,
+    image = require('../../../assets/img/right-arrow.png'),
+    color = MyColors.primary
+}: Props) => {
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
+        <TouchableOpacity style={{ ...styles.button, backgroundColor: color }} onPress={onPress}>
             <View />
             <Text style={styles.textButton}>{text}</Text>
             <Image source={image} style={styles.buttonIcon} />
@@ -19,9 +25,7 @@ export const DefaultButton = ({ onPress, text, image = require('../../../assets/
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: MyColors.primary,
         color: '#000000',
-        marginVertical: 50,
         marginHorizontal: 30,
         height: 50,
         alignItems: 'center',
