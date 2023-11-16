@@ -1,29 +1,28 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 // import { SignOutUseCase } from '../../../domain/useCases/auth/SignOutUseCase';
 
-// const HomeViewModel = ({ SignOutUseCase }: { SignOutUseCase: SignOutUseCase }) => {
-//     const [result, setResult] = useState(false);
+const ProfileUpdateViewModel = () => {
+    const [values, setValues] = useState({
+        username: '',
+        image: ''
+    });
 
-//     const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-//     const [error, setError] = useState('')
+    const [error, setError] = useState('');
 
-//     const logout = async () => {
-//         setLoading(true);
-//         const {result, error} = await SignOutUseCase.run();
-//         setResult(result!);
-//         setError(error);
-//         setLoading(false);
-//     }
+    const onChange = (prop: string, value: any) => {
+        setValues({...values, [prop]: value});
+    };
 
-//     return {
-//         result,
-//         setResult,
-//         error,
-//         setError, 
-//         logout,
-//         loading
-//     }
-// }
+    return {
+        ...values,
+        setValues,
+        error,
+        setError, 
+        loading,
+        onChange
+    }
+}
 
-// export default HomeViewModel;
+export default ProfileUpdateViewModel;

@@ -2,25 +2,39 @@ import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack";
 import { ImageBackground, View, Text, Image, ActivityIndicator } from 'react-native';
 import styles from './Styles';
 import DI from '../../../../di/ioc';
-import { TabParamList } from "../../../navigation/TabsNavigator";
 import { DefaultButton } from "../../../components/DefaultButton";
 import { MyColors, MyStyles } from "../../../theme/AppTheme";
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from "../../../navigation/MainStackNavigator";
+import Toast from 'react-native-simple-toast';
+import { ProfileStackParamList } from "../../../navigation/ProfileStackNavigator";
 
-interface Props extends StackScreenProps<TabParamList, 'ProfileInfoScreen'> { };
+interface Props extends StackScreenProps<ProfileStackParamList, 'ProfileInfoScreen'> { };
 
 export const ProfileInfoScreen = ({ navigation, route }: Props) => {
-    const { result, setResult, error, setError, logout, loading } = DI.resolve('ProfileInfoViewModel');
+    const { result, user, error, setError, logout, loading, getUserSession } = DI.resolve('ProfileInfoViewModel');
 
     const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+    useEffect(() => {
+        if (error !== null) {
+            if (error !== '') {
+                Toast.show(error, Toast.SHORT);
+                setError('');
+            };
+        }
+    }, [error]);
+
+    useEffect(() => {
+        getUserSession();
+    }, []);
 
     useEffect(() => {
         if (result) nav.replace('LoginScreen', {
             key: '', props: '', type: ''
         })
-    }, [result])
+    }, [result]);
 
     return (
         <View style={styles.container}>
@@ -34,13 +48,17 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
                 style={styles.profileImage}
                 source={require('../../../../../assets/img/user_image.png')} />
 
-            <Text style={styles.usernameText}>Nombre del usuario</Text>
-            <Text style={styles.emailText}>Correo electronico</Text>
+            {user != undefined && (
+                <>
+                    <Text style={styles.usernameText}>{user.username}</Text>
+                    <Text style={styles.emailText}>{user.email}</Text>
+                </>
+            )}
 
             <View style={{ flex: 1 }} />
 
             <View style={{ marginBottom: 15 }}>
-                <DefaultButton text="Edit Profile" onPress={() => { }} />
+                <DefaultButton text="Edit Profile" onPress={() => navigation.navigate('ProfileUpdateScreen', { user })} />
             </View>
 
             <View style={{ marginBottom: 30 }}>
