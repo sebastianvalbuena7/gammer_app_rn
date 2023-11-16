@@ -31,9 +31,7 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
     }, []);
 
     useEffect(() => {
-        if (result) nav.replace('LoginScreen', {
-            key: '', props: '', type: ''
-        })
+        if (result) nav.replace('LoginScreen', { key: '', props: '', type: '' })
     }, [result]);
 
     return (
@@ -48,7 +46,7 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
                 style={styles.profileImage}
                 source={require('../../../../../assets/img/user_image.png')} />
 
-            {user != undefined && (
+            {(user != null && user != undefined) && (
                 <>
                     <Text style={styles.usernameText}>{user.username}</Text>
                     <Text style={styles.emailText}>{user.email}</Text>

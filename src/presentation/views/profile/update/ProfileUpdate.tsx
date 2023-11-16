@@ -12,7 +12,7 @@ interface Props extends StackScreenProps<ProfileStackParamList, 'ProfileUpdateSc
 export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
     const { user } = route.params;
 
-    const { username, image, onChange, setValues } = DI.resolve('ProfileUpdateViewModel');
+    const { username, image, onChange, setValues, takePhoto, pickImage, file } = DI.resolve('ProfileUpdateViewModel');
 
     useEffect(() => {
         setValues(user);
@@ -25,19 +25,30 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
             </ImageBackground>
 
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.arrowBackContainer}>
-                    <Image
-                        source={require('../../../../../assets/img/left-arrow.png')}
-                        style={styles.arrowBack}
-                    />
-                </TouchableOpacity>
+                <Image
+                    source={require('../../../../../assets/img/left-arrow.png')}
+                    style={styles.arrowBack}
+                />
+            </TouchableOpacity>
 
             <Text style={styles.title}>Perfil de Usuario</Text>
 
-            <Image
-                style={styles.profileImage}
-                source={require('../../../../../assets/img/user_image.png')} />
+            <TouchableOpacity style={styles.profileImageContainer} 
+                // onPress={takePhoto}
+                onPress={pickImage}
+            >
+                {
+                    image == undefined || image == ''
+                        ? <Image
+                            style={styles.profileImage}
+                            source={require('../../../../../assets/img/user_image.png')} />
+                        : <Image
+                        style={styles.profileImage}
+                        source={{uri: image}} />
+                }
+            </TouchableOpacity>
 
-            <View style={{marginTop: 80}}>
+            <View style={{ marginTop: 80 }}>
                 <DefaultTextInput
                     placeholder="Username"
                     property="username"

@@ -16,7 +16,6 @@ const ProfileInfoViewModel = ({ SignOutUseCase, GetUserByIdUseCase, GetUserUseCa
 
     const getUserSession = async () => {
         const { result, error } = await GetUserUseCase.run();
-
         const myUser = result as FirebaseAuthTypes.User;
         getUserById(myUser.uid);
     };

@@ -23,13 +23,15 @@ const ProfileUpdateStyles = StyleSheet.create({
         alignSelf: 'center',
         top: 25
     },
-    profileImage: {
-        width: 130,
-        height: 130,
+    profileImageContainer: {
         position: 'absolute',
         top: 230,
         justifyContent: 'center',
         alignSelf: 'center'
+    },
+    profileImage: {
+        width: 130,
+        height: 130,
     },
     usernameText: {
         justifyContent: 'center',
@@ -46,8 +48,8 @@ const ProfileUpdateStyles = StyleSheet.create({
     },
     arrowBackContainer: {
         position: 'absolute',
-        top: 55,
-        left: 15
+        top: 30,
+        left: 30
     },
     arrowBack: {
         width: 30,

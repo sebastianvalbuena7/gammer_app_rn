@@ -15,7 +15,7 @@ export const getUserById = (id: string, callback: Function) => {
             },
             error => {
                 console.log('Error firestore ', error);
-                callback({ result: null, error: error });
+                callback({ result: null, error: 'Ha ocurrido un error' });
             }
         );
 }
