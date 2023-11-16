@@ -42,9 +42,16 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
 
             <Text style={styles.title}>Perfil de Usuario</Text>
 
-            <Image
-                style={styles.profileImage}
-                source={require('../../../../../assets/img/user_image.png')} />
+
+            {
+                user.image == undefined || user.image == ''
+                    ? <Image
+                        style={styles.profileImage}
+                        source={require('../../../../../assets/img/user_image.png')} />
+                    : <Image
+                        style={styles.profileImage}
+                        source={{ uri: user.image }} />
+            }
 
             {(user != null && user != undefined) && (
                 <>

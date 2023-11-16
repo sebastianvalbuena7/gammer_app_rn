@@ -32,6 +32,7 @@ const ProfileUpdateStyles = StyleSheet.create({
     profileImage: {
         width: 130,
         height: 130,
+        borderRadius: 100
     },
     usernameText: {
         justifyContent: 'center',

@@ -1,22 +1,41 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { Image, ImageBackground, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import { ProfileStackParamList } from "../../../navigation/ProfileStackNavigator";
 import { useEffect } from "react";
 import DI from '../../../../di/ioc';
 import styles from './Styles'
 import { DefaultButton } from "../../../components/DefaultButton";
 import { DefaultTextInput } from "../../../components/DefaultTextInput";
+import Toast from 'react-native-simple-toast';
+import { MyColors, MyStyles } from "../../../theme/AppTheme";
 
 interface Props extends StackScreenProps<ProfileStackParamList, 'ProfileUpdateScreen'> { };
 
 export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
     const { user } = route.params;
 
-    const { username, image, onChange, setValues, takePhoto, pickImage, file } = DI.resolve('ProfileUpdateViewModel');
+    const { username, image, onChange, setValues, takePhoto, pickImage, file, update, error, response, loading, setError } = DI.resolve('ProfileUpdateViewModel');
 
     useEffect(() => {
         setValues(user);
     }, []);
+
+    useEffect(() => {
+        if (error !== null) {
+            if (error !== '') {
+                Toast.show(error, Toast.SHORT);
+                setError('');
+            };
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if (response !== null && response !== undefined) {
+            if (response !== '') {
+                Toast.show(response, Toast.SHORT);
+            };
+        }
+    }, [response]);
 
     return (
         <View style={styles.container}>
@@ -33,7 +52,7 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
 
             <Text style={styles.title}>Perfil de Usuario</Text>
 
-            <TouchableOpacity style={styles.profileImageContainer} 
+            <TouchableOpacity style={styles.profileImageContainer}
                 // onPress={takePhoto}
                 onPress={pickImage}
             >
@@ -43,8 +62,8 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
                             style={styles.profileImage}
                             source={require('../../../../../assets/img/user_image.png')} />
                         : <Image
-                        style={styles.profileImage}
-                        source={{uri: image}} />
+                            style={styles.profileImage}
+                            source={{ uri: image }} />
                 }
             </TouchableOpacity>
 
@@ -61,8 +80,13 @@ export const ProfileUpdateScreen = ({ navigation, route }: Props) => {
             <View style={{ flex: 1 }} />
 
             <View style={{ marginBottom: 30 }}>
-                <DefaultButton text="Update Profile" onPress={() => navigation.navigate('ProfileUpdateScreen', { user })} />
+                <DefaultButton text="Update Profile" onPress={update} />
             </View>
+
+            {
+                loading &&
+                <ActivityIndicator size='large' color={MyColors.primary} style={MyStyles.stylesLoading} />
+            }
         </View>
     );
 }

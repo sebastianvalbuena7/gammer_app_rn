@@ -13,6 +13,8 @@ import { SignOutUseCase } from '../domain/useCases/auth/SignOutUseCase';
 import { GetUserUseCase } from '../domain/useCases/auth/GetUserUseCase';
 import { GetUserByIdUseCase } from '../domain/useCases/users/GetUserByIdUseCase';
 import ProfileUpdateViewModel from '../presentation/views/profile/update/ViewModel';
+import { UpdateUserUseCase } from '../domain/useCases/users/UpdateUserUseCase';
+import { UpdateWithImageUserUseCase } from '../domain/useCases/users/UpdateWithImageUserUseCase';
 
 const container = createContainer();
 
@@ -33,7 +35,9 @@ container.register({
     RegisterUseCase: asFunction(RegisterUseCase),
     SignOutUseCase: asFunction(SignOutUseCase),
     GetUserUseCase: asFunction(GetUserUseCase),
-    GetUserByIdUseCase: asFunction(GetUserByIdUseCase)
+    GetUserByIdUseCase: asFunction(GetUserByIdUseCase),
+    UpdateUserUseCase: asFunction(UpdateUserUseCase),
+    UpdateWithImageUserUseCase: asFunction(UpdateWithImageUserUseCase)
 });
 
 export default container;
