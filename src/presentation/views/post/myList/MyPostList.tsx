@@ -1,15 +1,17 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import styles from './Styles';
-import { TabParamList } from "../../../navigation/TabsNavigator";
+import { MyPostStackParamList } from "../../../navigation/MyPostStackNavigator";
 
-interface Props extends StackScreenProps<TabParamList, 'MyPostListScreen'> { };
+interface Props extends StackScreenProps<MyPostStackParamList, 'MyPostListScreen'> { };
 
 export const MyPostListScreen = ({ navigation, route }: Props) => {
 
     return (
         <View style={styles.container}>
-            <Text>MyPostListScreen</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('PostCreateScreen')} style={styles.fabContainer}>
+                <Image source={require('../../../../../assets/img/add.png')} style={styles.fab}/>
+            </TouchableOpacity>
         </View>
     )
 }

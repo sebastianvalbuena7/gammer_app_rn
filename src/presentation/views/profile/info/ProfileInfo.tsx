@@ -44,13 +44,13 @@ export const ProfileInfoScreen = ({ navigation, route }: Props) => {
 
 
             {
-                user.image == undefined || user.image == ''
+                user?.image == undefined || user?.image == ''
                     ? <Image
                         style={styles.profileImage}
                         source={require('../../../../../assets/img/user_image.png')} />
                     : <Image
                         style={styles.profileImage}
-                        source={{ uri: user.image }} />
+                        source={{ uri: user?.image }} />
             }
 
             {(user != null && user != undefined) && (

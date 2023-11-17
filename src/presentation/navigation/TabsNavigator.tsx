@@ -1,13 +1,13 @@
 import { Image } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { PostListScreen } from "../views/post/list/PostList";
-import { MyPostListScreen } from "../views/post/myList/MyPostList";
 import { MyColors } from "../theme/AppTheme";
 import { ProfileStackNavigator } from './ProfileStackNavigator';
+import { MyPostStackNavigator } from "./MyPostStackNavigator";
 
 export type TabParamList = {
     PostListScreen: JSX.Element,
-    MyPostListScreen: JSX.Element,
+    MyPostStackNavigator: JSX.Element,
     ProfileStackNavigator: JSX.Element
 };
 
@@ -28,7 +28,7 @@ export const TabsNavigator = () => {
                 tabBarActiveTintColor: "white"
             }} />
 
-            <Tab.Screen name='MyPostListScreen' component={MyPostListScreen} options={{
+            <Tab.Screen name='MyPostStackNavigator' component={MyPostStackNavigator} options={{
                 title: 'My Posts',
                 tabBarLabel: 'My Posts',
                 tabBarIcon: () => <Image source={require('../../../assets/img/checklist.png')} style={{ height: 25, width: 25 }} />,
