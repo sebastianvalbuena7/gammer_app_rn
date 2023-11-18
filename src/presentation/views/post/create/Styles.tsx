@@ -15,7 +15,8 @@ const PostCreateStyles = StyleSheet.create({
     },
     selectImage: {
         width: 130,
-        height: 130
+        height: 130,
+        alignSelf: 'center'
     },
     textImage: {
         fontSize: 20
@@ -34,6 +35,10 @@ const PostCreateStyles = StyleSheet.create({
     arrowBack: {
         width: 30,
         height: 30
+    },
+    fileImage: {
+        width: '100%',
+        height: '100%'
     }
 });
 
