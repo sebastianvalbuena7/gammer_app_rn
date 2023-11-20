@@ -21,6 +21,10 @@ import { PostRepository } from '../data/repository/PostRepository';
 import { CreatePostUseCase } from '../domain/useCases/posts/CreatePostUseCase';
 import { GetPostsUseCase } from '../domain/useCases/posts/GetPostsUseCase';
 import PostListViewModel from '../presentation/views/post/list/ViewModel';
+import { GetUserByIdOnceUseCase } from '../domain/useCases/users/GetUserByIdOnceUseCase';
+import PostDetailViewModel from '../presentation/views/post/detail/ViewModel';
+import { GetPostsByIdUseCase } from '../domain/useCases/posts/GetPostsByIdUseCase';
+import MyPostListViewModel from '../presentation/views/post/myList/ViewModel';
 
 const container = createContainer();
 
@@ -32,6 +36,8 @@ container.register({
     ProfileUpdateViewModel: asFunction(ProfileUpdateViewModel),
     PostCreateViewModel: asFunction(PostCreateViewModel),
     PostListViewModel: asFunction(PostListViewModel),
+    PostDetailViewModel: asFunction(PostDetailViewModel),
+    MyPostListViewModel: asFunction(MyPostListViewModel),
 
     AuthDataSource: asValue(AuthDataSource),
     UsersDataSource: asValue(UsersDataSource),
@@ -49,7 +55,9 @@ container.register({
     UpdateUserUseCase: asFunction(UpdateUserUseCase),
     UpdateWithImageUserUseCase: asFunction(UpdateWithImageUserUseCase),
     CreatePostUseCase: asFunction(CreatePostUseCase),
-    GetPostsUseCase: asFunction(GetPostsUseCase)
+    GetPostsUseCase: asFunction(GetPostsUseCase),
+    GetUserByIdOnceUseCase: asFunction(GetUserByIdOnceUseCase),
+    GetPostsByIdUseCase: asFunction(GetPostsByIdUseCase)
 });
 
 export default container;

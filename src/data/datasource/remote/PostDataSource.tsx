@@ -12,6 +12,7 @@ export interface PostDataSource {
         result: null;
     }>;
     getPosts: (callback: Function) => void;
+    getPostsById: (idUser: string, callback: Function) => void;
 }
 
 export const create = async (post: Post, file: Asset) => {
@@ -36,6 +37,25 @@ export const create = async (post: Post, file: Asset) => {
 
 export const getPosts = (callback: Function) => {
     firestore().collection('Posts')
+        .onSnapshot(
+            snapshot => {
+                const posts = snapshot.docs.map((doc) => {
+                    const post = doc.data() as Post;
+                    const id = doc.id;
+                    return { ...post, id }
+                });
+                callback({ result: posts, error: null });
+            },
+            error => {
+                console.log('Error firestore ', error);
+                callback({ result: null, error: 'Ha ocurrido un error' });
+            }
+        );
+};
+
+export const getPostsById = (idUser: string, callback: Function) => {
+    firestore().collection('Posts')
+        .where('idUser', '==', idUser)
         .onSnapshot(
             snapshot => {
                 const posts = snapshot.docs.map((doc) => {

@@ -19,6 +19,13 @@ export interface UsersDataSource {
         error: any;
         result: null;
     }>;
+    getUserByIdOnce: (id: string) => Promise<{
+        error: null;
+        result: User;
+    } | {
+        error: any;
+        result: null;
+    }>;
 }
 
 export const getUserById = (id: string, callback: Function) => {
@@ -34,6 +41,17 @@ export const getUserById = (id: string, callback: Function) => {
                 callback({ result: null, error: 'Ha ocurrido un error' });
             }
         );
+};
+
+export const getUserByIdOnce = async (id: string) => {
+    try {
+        const user = (await firestore().collection('Users')
+        .doc(id).get()).data() as User;
+
+        return Promise.resolve({ error: null, result: user })
+    } catch (error: any) {
+        return Promise.resolve({ error: error.message, result: null });
+    }
 };
 
 export const updateWithImage = async (id: string, user: User, file: Asset) => {

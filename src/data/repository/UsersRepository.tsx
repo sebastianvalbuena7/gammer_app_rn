@@ -12,6 +12,10 @@ export interface UsersRepository {
         error: any;
         result: boolean | null;
     }>;
+    getUserByIdOnce(id: string): Promise<{
+        error: any;
+        result: User | null;
+    }>;
 };
 
 export const UsersRepository = ({ UsersDataSource }: { UsersDataSource: UsersDataSource }) => {
@@ -27,6 +31,10 @@ export const UsersRepository = ({ UsersDataSource }: { UsersDataSource: UsersDat
         },
         async updateWithImage(id: string, user: User, file: Asset) {
             const { error, result } = await UsersDataSource.updateWithImage(id, user, file);
+            return { error, result };
+        },
+        async getUserByIdOnce(id: string) {
+            const { error, result } = await UsersDataSource.getUserByIdOnce(id);
             return { error, result };
         }
     }

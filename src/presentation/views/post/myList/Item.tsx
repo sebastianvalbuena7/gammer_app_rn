@@ -6,11 +6,13 @@ interface Props {
     navigation: any
 }
 
-export const PostListItem = ({ post, navigation }: Props) => {
+export const MyPostListItem = ({ post, navigation }: Props) => {
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('PostDetailScreen', {
-            post
-        })} style={styles.container}>
+        <TouchableOpacity 
+        // onPress={() => navigation.navigate('PostDetailScreen', {
+        //     post
+        // })} 
+        style={styles.container}>
             <Image source={{ uri: post.image }} style={styles.postImage} />
             <Text style={styles.name}>{post.name}</Text>
             <Text style={styles.username}>{post.idUser}</Text>

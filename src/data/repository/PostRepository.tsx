@@ -8,6 +8,7 @@ export interface PostRepository {
         error: any;
     }>;
     getPosts(callback: Function): void;
+    getPostsById(idUser: string, callback: Function): void;
 };
 
 export const PostRepository = ({ PostDataSource }: { PostDataSource: PostDataSource }) => {
@@ -17,9 +18,14 @@ export const PostRepository = ({ PostDataSource }: { PostDataSource: PostDataSou
             return { result, error };
         },
         getPosts(callback: Function) {
-            PostDataSource.getPosts(({result, error}: any) => {
-                callback({result, error});
+            PostDataSource.getPosts(({ result, error }: any) => {
+                callback({ result, error });
             });
+        },
+        getPostsById(idUser: string, callback: Function) {
+            PostDataSource.getPostsById(idUser, ({ result, error }: any) => {
+                callback({ result, error });
+            })
         }
     }
 };
